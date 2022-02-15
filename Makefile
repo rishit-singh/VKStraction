@@ -23,7 +23,7 @@ SRC			:= src
 #"soon" going to move to the project folders
 INC			:= include 
 LIB			:= lib
-HEADERS := include/*.h
+HEADERS := include/*.h*
 #----------------------------------------->
 OBJ     	:= obj
 RES			:= res
