@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+import os
+
+requiredDirs = [ # Directories required for building the project.
+        "obj",
+        "obj/linux",
+        "bin"
+    ]
+
+def CheckBuildRequirements(dirName: str):
+    size = len(requiredDirs)
+    
+    for dirName in requiredDirs:
+        if (os.path.exists(dirName)):
+            continue
+        os.makedirs(dirName)
+
+def Build():
+    CheckBuildRequirements('.')
+    os.system("make -j4")
+
+Build()
