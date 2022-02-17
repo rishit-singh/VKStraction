@@ -4,21 +4,22 @@
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 #include <string>
+#include "../include/window.hpp"
 
 namespace VKStraction
 {
     struct EngineInfo
-    {};
+    {
+    };
 
     class Engine
     {
     private:
-            GLFWwindow* Window;
-
-            void InitializeWindow();
             void InitializeVulkan();
             void CleanUp();
     public:
+            Window WindowObject;
+
             void RunMainLoop();
 
             Engine();
