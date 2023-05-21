@@ -1,10 +1,9 @@
 #ifndef VKSTRACTION_H_
 #define VKSTRACTION_H_
 
-#include <vulkan/vulkan.h>
-#include <GLFW/glfw3.h>
+#include <vulkan/vulkan.hpp>
 #include <string>
-#include "../include/window.hpp"
+#include "window.hpp"
 
 namespace VKStraction
 {

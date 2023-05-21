@@ -3,15 +3,18 @@
 
 namespace VKStraction
 {
-    template<typename T>
+
+    /*
+     * Stores 2D vectors.
+     * */
     struct Vector2D
     {
     public:
-            T X, Y;
+            double X;
 
-            Vector2D(T x, T y) : X(x), Y(y)
-            {
-            }
+            double Y;
+
+            Vector2D(double = 0.0f, double = 0.0f);
     };
 }
 

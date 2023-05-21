@@ -1,25 +1,24 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
-#include <GLFW/glfw3.h>
-#include <string>
+#include <string_view>
 #include "types.hpp"
+
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
 
 namespace VKStraction
 {
-    typedef Vector2D<int> WindowResolution;
-
     class Window
     {
     private:
         void Delete();
 
+        SDL_Window* mWindow;
+
     public:
-        std::string Title;
-
-        GLFWwindow* GLFWWindowObject;
-
-        WindowResolution Resolution;
+        std::string_view Title;
 
         void Initialize();
 
