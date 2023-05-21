@@ -2,26 +2,29 @@
 #define VKSTRACTION_H_
 
 #include <vulkan/vulkan.hpp>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
 #include <string>
 #include "window.hpp"
 
 namespace VKStraction
 {
-    struct EngineInfo
-    {
-    };
 
     class Engine
     {
     private:
             void InitializeVulkan();
             void CleanUp();
+
+            std::string_view AppName;
     public:
-            Window WindowObject;
+            Window EngineWindow;
 
-            void RunMainLoop();
+            bool IsRunning;
 
-            Engine();
+            void Run();
+
+            Engine(std::string_view = "VKStraction App", Vector2D = Vector2D(800, 600));
             ~Engine();
     };
 }

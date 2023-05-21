@@ -2,7 +2,7 @@
 #define WINDOW_H_
 
 #include <string_view>
-#include "types.hpp"
+#include "vertex.hpp"
 
 
 #include <SDL2/SDL.h>
@@ -12,17 +12,21 @@ namespace VKStraction
 {
     class Window
     {
-    private:
-        void Delete();
-
+    protected:
         SDL_Window* mWindow;
 
     public:
         std::string_view Title;
 
+        Vector2D Dimensions;
+
+        SDL_Event WindowEvent;
+
         void Initialize();
 
-        Window();
+        SDL_Event& PollEvents();
+
+        Window(std::string_view, Vector2D, bool = false);
         ~Window();
     };
 }

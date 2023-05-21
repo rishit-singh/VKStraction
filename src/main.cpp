@@ -1,12 +1,11 @@
-#include "../include/vkstraction.hpp"
-
-using namespace VKStraction;
+#include "vkstraction.hpp"
+#include "vulkan/vulkan_core.h"
 
 int main()
 {
-	Engine engine = Engine();
+	VKStraction::Engine engine = VKStraction::Engine();
 
-	engine.RunMainLoop();
+	engine.Run();
 
 	return 0;
 }

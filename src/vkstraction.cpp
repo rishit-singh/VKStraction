@@ -1,20 +1,29 @@
-#include "../include/vkstraction.hpp"
-#include <GLFW/glfw3.h>
+#include "vkstraction.hpp"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_events.h"
 
-void VKStraction::Engine::RunMainLoop()
+void VKStraction::Engine::Run()
 {
-    while (!glfwWindowShouldClose(this->WindowObject.GLFWWindowObject))
+    this->IsRunning = true;
+
+    while (this->IsRunning)
     {
-        glfwPollEvents();
+        if (this->EngineWindow.PollEvents().type == SDL_QUIT)
+            this->IsRunning = false;
     }
 }
 
 void VKStraction::Engine::CleanUp()
 {
+    SDL_Quit();
 }
 
-VKStraction::Engine::Engine()
+VKStraction::Engine::Engine(std::string_view appName, Vector2D dimensions)
+        : AppName(appName), EngineWindow(appName, dimensions), IsRunning(false)
 {
+    SDL_Init(SDL_INIT_VIDEO);
+
+    this->EngineWindow.Initialize();
 }
 
 VKStraction::Engine::~Engine()

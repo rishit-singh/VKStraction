@@ -1,19 +1,31 @@
 #include "window.hpp"
+#include "SDL2/SDL_events.h"
+#include "SDL2/SDL_video.h"
 
-VKStraction::Window::Window() : Title("VKStraction App"), Resolution(WindowResolution(800, 600))
+VKStraction::Window::Window(std::string_view title, Vector2D dimensions, bool initialize) : Title(title), Dimensions(dimensions)
 {
-    this->Initialize();
+    if (initialize)
+        this->Initialize();
 }
 
 VKStraction::Window::~Window()
 {
-    this->Delete();
+    SDL_DestroyWindow(this->mWindow);
 }
 
 void VKStraction::Window::Initialize()
 {
+    this->mWindow = SDL_CreateWindow(this->Title.data(),
+                                     0,
+                                     2500,
+                                     this->Dimensions.X,
+                                     this->Dimensions.Y,
+                                     (SDL_WindowFlags)(SDL_WINDOW_VULKAN));
 }
 
-void VKStraction::Window::Delete()
+SDL_Event &VKStraction::Window::PollEvents()
 {
+    SDL_PollEvent(&this->WindowEvent);
+
+    return this->WindowEvent;
 }
