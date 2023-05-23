@@ -1,6 +1,7 @@
 #include "vkstraction.hpp"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_events.h"
+#include "vulkancontext.hpp"
 
 void VKStraction::Engine::Run()
 {
@@ -24,6 +25,8 @@ VKStraction::Engine::Engine(std::string_view appName, Vector2D dimensions)
     SDL_Init(SDL_INIT_VIDEO);
 
     this->EngineWindow.Initialize();
+
+    this->VkContext = VulkanContext(this->EngineWindow, this->AppName);
 }
 
 VKStraction::Engine::~Engine()

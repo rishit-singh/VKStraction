@@ -26,6 +26,8 @@ namespace VKStraction
 
         SDL_Event& PollEvents();
 
+        SDL_Window* GetInstance();
+
         Window(std::string_view, Vector2D, bool = false);
         ~Window();
     };

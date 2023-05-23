@@ -29,3 +29,9 @@ SDL_Event &VKStraction::Window::PollEvents()
 
     return this->WindowEvent;
 }
+
+
+SDL_Window* VKStraction::Window::GetInstance()
+{
+    return this->mWindow;
+}

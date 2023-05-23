@@ -6,6 +6,7 @@
 #include <SDL2/SDL_vulkan.h>
 #include <string>
 #include "window.hpp"
+#include "vulkancontext.hpp"
 
 namespace VKStraction
 {
@@ -18,6 +19,8 @@ namespace VKStraction
 
             std::string_view AppName;
     public:
+            VulkanContext VkContext;
+
             Window EngineWindow;
 
             bool IsRunning;
