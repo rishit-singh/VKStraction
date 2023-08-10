@@ -1,17 +1,8 @@
-#ifndef ERROR_H_
-#define ERROR_H_
+#ifndef :Q
 
-#include <iostream>
+#define :Q
 
-#define VK_CHECK(x)                                                 \
-    do                                                              \
-    {                                                               \
-        VkResult err = x;                                           \
-        if (err)                                                    \
-        {                                                           \
-            std::cout <<"Detected Vulkan error: " << err << std::endl; \
-            abort();                                                \
-        }                                                           \
-    } while (0)
 
-#endif // ERROR_H_
+
+
+#endif // :Q

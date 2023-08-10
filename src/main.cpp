@@ -1,12 +1,9 @@
-#include "vkstraction.hpp"
-#include "vulkan/vulkan_core.h"
-#include "vulkancontext.hpp"
+#include <iostream>
 
-int main()
-{
-	VKStraction::Engine engine = VKStraction::Engine();
+using namespace std;
 
-	engine.Run();
+int main(int argc, char** argv) {
 
-	return 0;
+
+    return 0;
 }

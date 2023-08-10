@@ -1,2 +1,0 @@
-# VKStraction
-General Vulkan abstraction.
