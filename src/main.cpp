@@ -1,8 +1,8 @@
 #include <iostream>
-#include <window.hpp>
+#include <engine.hpp>
 
 int main(int argc, char** argv) {
-    VKStraction::Window({800, 800}, " Title").Show();
+    VKStraction::Engine("Engine", { 800, 600 }).Run();
 
     return 0;
 }

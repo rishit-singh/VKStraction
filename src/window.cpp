@@ -37,7 +37,7 @@ VKStraction::Window::Window(Dimensions2D dimensions, std::string_view title)
     glfwInit();
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     this->_Window = glfwCreateWindow(dimensions.Width, dimensions.Height, title.data(), nullptr, nullptr);
 }

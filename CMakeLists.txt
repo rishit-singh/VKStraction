@@ -10,13 +10,16 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_FLAGS "-Wall -D_THREAD_SAFE --std=c++20")
 
 find_package(glfw3 3.3 REQUIRED)
+find_package(Vulkan REQUIRED FATAL_ERROR)
 
 file(GLOB COMMON_SOURCES
-	src/window.cpp) # to be changed when there are common files
+    src/window.cpp
+	src/builder.cpp
+    src/engine.cpp)
 
 include_directories( include/ )
 
 add_executable(engine src/main.cpp ${COMMON_SOURCES})
 
 target_include_directories(engine PRIVATE include/)
-target_link_libraries(engine glfw)
+target_link_libraries(engine PUBLIC glfw Vulkan::Vulkan)
