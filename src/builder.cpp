@@ -1,4 +1,3 @@
-#include "vulkan/vulkan_core.h"
 #include <builder.hpp>
 
 VKStraction::VulkanInstance::VulkanInstance(VkApplicationInfo* appInfo)
@@ -29,10 +28,17 @@ VkInstanceCreateInfo &VKStraction::VulkanInstance::GetCreateInfo()
 
     uint32_t extensionCount = 0;
 
-    const char** extensions = glfwGetRequiredInstanceExtensions(&extensionCount);
+    const char** extensionBuffer = glfwGetRequiredInstanceExtensions(&extensionCount);
+
+    for (int x = 0; x < extensionCount; x++)
+        this->Extensions.push_back(extensionBuffer[x]);
+
+    this->Extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+
+    this->CreateInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 
     this->CreateInfo.enabledExtensionCount = extensionCount;
-    this->CreateInfo.ppEnabledExtensionNames = extensions;
+    this->CreateInfo.ppEnabledExtensionNames = this->Extensions.data();
     this->CreateInfo.enabledLayerCount = 0;
 
     return this->CreateInfo;

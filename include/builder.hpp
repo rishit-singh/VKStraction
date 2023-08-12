@@ -4,11 +4,11 @@
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
+#include <vector>
 #include <stdexcept>
 
 namespace VKStraction
 {
-
     class VulkanInstance
     {
     private:
@@ -19,6 +19,8 @@ namespace VKStraction
         VkInstanceCreateInfo CreateInfo;
 
         VkInstanceCreateInfo& GetCreateInfo();
+
+        std::vector<const char*> Extensions;
 
     public:
         const VkInstance& Build();
