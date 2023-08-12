@@ -6,6 +6,8 @@
 #include <vulkan/vulkan_core.h>
 #include <vector>
 #include <stdexcept>
+#include <stdlib.h>
+#include <string>
 
 namespace VKStraction
 {

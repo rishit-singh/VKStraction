@@ -14,8 +14,18 @@ VKStraction::VulkanInstance::~VulkanInstance()
 
 const VkInstance& VKStraction::VulkanInstance::Build()
 {
-    if (vkCreateInstance(&this->CreateInfo, nullptr, &this->Instance) != VK_SUCCESS)
-        throw std::runtime_error("Failed to create VkInstance");
+    VkResult result;
+
+
+    if ((result = vkCreateInstance(&this->CreateInfo, nullptr, &this->Instance)) != VK_SUCCESS)
+    {
+        std::string res = "";
+
+        res += (char)((int)result);
+
+
+        throw std::runtime_error(res); // "Failed to create VkInstance");
+    }
 
     return this->Instance;
 }
@@ -34,10 +44,9 @@ VkInstanceCreateInfo &VKStraction::VulkanInstance::GetCreateInfo()
         this->Extensions.push_back(extensionBuffer[x]);
 
     this->Extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
-
     this->CreateInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 
-    this->CreateInfo.enabledExtensionCount = extensionCount;
+    this->CreateInfo.enabledExtensionCount = this->Extensions.size();
     this->CreateInfo.ppEnabledExtensionNames = this->Extensions.data();
     this->CreateInfo.enabledLayerCount = 0;
 
