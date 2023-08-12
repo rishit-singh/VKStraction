@@ -20,10 +20,15 @@ namespace VKStraction
 
         VkInstanceCreateInfo CreateInfo;
 
+        std::vector<const char*> EnabledExtensions;
+
+        std::vector<VkExtensionProperties> SupportedExtensions;
+
         VkInstanceCreateInfo& GetCreateInfo();
 
-        std::vector<const char*> Extensions;
+        void GetSupportedExtensions();
 
+        bool CheckValidationLayerSupport();
     public:
         const VkInstance& Build();
 

@@ -15,7 +15,10 @@ find_package(Vulkan REQUIRED FATAL_ERROR)
 file(GLOB COMMON_SOURCES
     src/window.cpp
 	src/builder.cpp
-    src/engine.cpp)
+    src/engine.cpp
+	src/validationlayer.cpp
+	src/util.cpp
+	)
 
 include_directories( include/ )
 
