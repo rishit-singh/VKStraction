@@ -1,5 +1,13 @@
-#include "vulkan/vulkan_core.h"
 #include <validationlayer.hpp>
+
+VKStraction::ValidationLayer::ValidationLayer(VkInstanceCreateInfo *createInfo)
+    : CreateInfo(createInfo) {}
+
+
+VKStraction::ValidationLayer::~ValidationLayer()
+{
+}
+
 
 void VKStraction::ValidationLayer::AddLayer(const char* layer)
 {
@@ -30,4 +38,13 @@ bool VKStraction::ValidationLayer::LayerExists(const char *layer)
             return true;
 
     return false;
+}
+
+void VKStraction::ValidationLayer::Enable()
+{
+    if (!this->CheckSupport())
+        throw std::runtime_error("Validation layers not supported");
+
+    this->CreateInfo->enabledLayerCount = this->Layers.size();
+    this->CreateInfo->ppEnabledLayerNames = this->Layers.data();
 }

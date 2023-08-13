@@ -1,6 +1,7 @@
 #ifndef BUILDER_H_
 #define BUILDER_H_
 
+#include <validationlayer.hpp>
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
@@ -8,6 +9,8 @@
 #include <stdexcept>
 #include <stdlib.h>
 #include <string>
+
+#define DEBUG
 
 namespace VKStraction
 {
@@ -24,15 +27,18 @@ namespace VKStraction
 
         std::vector<VkExtensionProperties> SupportedExtensions;
 
+        ValidationLayer ValidationLayers;
+
         VkInstanceCreateInfo& GetCreateInfo();
 
         void GetSupportedExtensions();
 
         bool CheckValidationLayerSupport();
+
+        bool EnableValidationLayers;
     public:
         const VkInstance& Build();
 
-        VulkanInstance() = default;
         VulkanInstance(VkApplicationInfo*);
         ~VulkanInstance();
     };

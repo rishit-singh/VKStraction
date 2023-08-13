@@ -15,13 +15,17 @@ namespace VKStraction
 
         std::vector<VkLayerProperties> AvailableLayers;
 
+        VkInstanceCreateInfo* CreateInfo;
+
         bool LayerExists(const char*);
 
         bool CheckSupport();
+
     public:
         void AddLayer(const char*);
+        void Enable();
 
-        ValidationLayer() = default;
+        ValidationLayer(VkInstanceCreateInfo*);
         ~ValidationLayer();
     };
 }

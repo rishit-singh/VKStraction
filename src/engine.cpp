@@ -1,9 +1,11 @@
 #include <engine.hpp>
 
-VKStraction::Engine::Engine(std::string_view appName, Dimensions2D windowDimensions) : AppName(appName), _Window(Window(windowDimensions, appName))
+VKStraction::Engine::Engine(std::string_view appName, Dimensions2D windowDimensions) : AppName(appName), _Window(Window(windowDimensions, appName)), Instance(nullptr)
 {
     this->GetAppInfo();
     this->Instance = VulkanInstance(&this->AppInfo);
+
+    this->Instance.Build();
 }
 
 VkApplicationInfo &VKStraction::Engine::GetAppInfo()

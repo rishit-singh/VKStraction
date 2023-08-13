@@ -1,11 +1,10 @@
-#include "vulkan/vulkan_core.h"
 #include <builder.hpp>
 
 VKStraction::VulkanInstance::VulkanInstance(VkApplicationInfo* appInfo)
-    : AppInfo(appInfo), Instance(nullptr)
+    : AppInfo(appInfo), Instance(nullptr), EnableValidationLayers(true), ValidationLayers(ValidationLayer(nullptr))
 {
-    this->GetCreateInfo();
-    this->Build();
+    if (this->EnableValidationLayers)
+        this->ValidationLayers = ValidationLayer(&this->CreateInfo);
 }
 
 VKStraction::VulkanInstance::~VulkanInstance()
@@ -15,6 +14,8 @@ VKStraction::VulkanInstance::~VulkanInstance()
 
 const VkInstance& VKStraction::VulkanInstance::Build()
 {
+    this->GetCreateInfo();
+
     if (vkCreateInstance(&this->CreateInfo, nullptr, &this->Instance) != VK_SUCCESS)
         throw std::runtime_error("Failed to create VkInstance");
 
@@ -37,10 +38,14 @@ VkInstanceCreateInfo &VKStraction::VulkanInstance::GetCreateInfo()
 
     const char** extensionBuffer = glfwGetRequiredInstanceExtensions(&extensionCount);
 
-    for (int x = 0; x < extensionCount; x++)
-        this->EnabledExtensions.push_back(extensionBuffer[x]);
+    this->EnabledExtensions = std::vector<const char*>(extensionBuffer, extensionBuffer + extensionCount);
 
     this->EnabledExtensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+
+    #ifdef DEBUG
+    this->EnabledExtensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+    #endif
+
     this->CreateInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 
     this->CreateInfo.enabledExtensionCount = this->EnabledExtensions.size();
