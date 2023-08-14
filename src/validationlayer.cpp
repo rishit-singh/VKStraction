@@ -24,9 +24,15 @@ bool VKStraction::ValidationLayer::CheckSupport()
 
     vkEnumerateInstanceLayerProperties(&count, this->AvailableLayers.data());
 
+    std::cout << "Layercount: " <<  count << '\n';
+
+    for (auto layer : this->AvailableLayers)
+        std::cout << "layer: " << layer.layerName << '\n';
+
     for (int x = 0; x < this->Layers.size(); x++)
         if (!this->LayerExists(this->Layers[x]))
             return false;
+
 
     return true;
 }

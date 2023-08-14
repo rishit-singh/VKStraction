@@ -1,10 +1,12 @@
 #ifndef BUILDER_H_
 #define BUILDER_H_
 
-#include <validationlayer.hpp>
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
+
+#include <validationlayer.hpp>
+#include <debug.hpp>
 #include <vector>
 #include <stdexcept>
 #include <stdlib.h>
@@ -28,6 +30,8 @@ namespace VKStraction
         std::vector<VkExtensionProperties> SupportedExtensions;
 
         ValidationLayer ValidationLayers;
+
+        DebugMessenger Messenger;
 
         VkInstanceCreateInfo& GetCreateInfo();
 

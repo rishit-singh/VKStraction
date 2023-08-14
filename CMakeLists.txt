@@ -18,6 +18,7 @@ file(GLOB COMMON_SOURCES
     src/engine.cpp
 	src/validationlayer.cpp
 	src/util.cpp
+    src/debug.cpp
 	)
 
 include_directories( include/ )

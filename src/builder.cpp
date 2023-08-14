@@ -1,10 +1,20 @@
+#include "debug.hpp"
 #include <builder.hpp>
 
+
 VKStraction::VulkanInstance::VulkanInstance(VkApplicationInfo* appInfo)
-    : AppInfo(appInfo), Instance(nullptr), EnableValidationLayers(true), ValidationLayers(ValidationLayer(nullptr))
+    : AppInfo(appInfo), Instance(nullptr), EnableValidationLayers(false), ValidationLayers(ValidationLayer(nullptr))
 {
+    #ifdef DEBUG
+    std::cout << "Debug enabled\n";
+    this->EnableValidationLayers = true;
+    #endif
+
     if (this->EnableValidationLayers)
+    {
         this->ValidationLayers = ValidationLayer(&this->CreateInfo);
+        this->ValidationLayers.Enable();
+    }
 }
 
 VKStraction::VulkanInstance::~VulkanInstance()
@@ -18,6 +28,12 @@ const VkInstance& VKStraction::VulkanInstance::Build()
 
     if (vkCreateInstance(&this->CreateInfo, nullptr, &this->Instance) != VK_SUCCESS)
         throw std::runtime_error("Failed to create VkInstance");
+
+    if (this->EnableValidationLayers)
+    {
+        this->Messenger = DebugMessenger(this->Instance);
+        this->Messenger.Enable();
+    }
 
     return this->Instance;
 }
@@ -42,15 +58,17 @@ VkInstanceCreateInfo &VKStraction::VulkanInstance::GetCreateInfo()
 
     this->EnabledExtensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 
-    #ifdef DEBUG
-    this->EnabledExtensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-    #endif
+    if (this->EnableValidationLayers)
+        this->EnabledExtensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 
     this->CreateInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 
     this->CreateInfo.enabledExtensionCount = this->EnabledExtensions.size();
     this->CreateInfo.ppEnabledExtensionNames = this->EnabledExtensions.data();
     this->CreateInfo.enabledLayerCount = 0;
+
+    if (this->EnableValidationLayers)
+        this->CreateInfo.pNext = this->Messenger.GetCreateInfo();
 
     return this->CreateInfo;
 }
