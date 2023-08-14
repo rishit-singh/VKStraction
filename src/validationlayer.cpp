@@ -33,7 +33,6 @@ bool VKStraction::ValidationLayer::CheckSupport()
         if (!this->LayerExists(this->Layers[x]))
             return false;
 
-
     return true;
 }
 

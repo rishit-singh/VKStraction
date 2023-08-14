@@ -5,11 +5,16 @@
 #include <stdexcept>
 #include <vulkan/vulkan_core.h>
 
+VKAPI_ATTR VkResult VKAPI_CALL vkCreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pMessenger);
+
 namespace VKStraction
 {
     class DebugMessenger
     {
     private:
+        PFN_vkCreateDebugUtilsMessengerEXT CreateDebugUtilsMessengerEXT;
+
+        PFN_vkDestroyDebugUtilsMessengerEXT  DestroyDebugUtilsMEssengerEXT;
 
         VkDebugUtilsMessengerCreateInfoEXT CreateInfo;
 
@@ -21,16 +26,16 @@ namespace VKStraction
 
         static VKAPI_ATTR VkBool32 VKAPI_CALL DefaultDebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT , VkDebugUtilsMessageTypeFlagsEXT , const VkDebugUtilsMessengerCallbackDataEXT*, void*);
 
-        void GenerateCreateInfo();
+        void LoadAPI();
 
     public:
-        void Enable();
+        void GenerateCreateInfo();
+        void Enable(VkInstance);
         VkDebugUtilsMessengerCreateInfoEXT* GetCreateInfo();
 
-        DebugMessenger();
-        DebugMessenger(VkInstance, PFN_vkDebugUtilsMessengerCallbackEXT = (PFN_vkDebugUtilsMessengerCallbackEXT)DefaultDebugCallback);
+        DebugMessenger(PFN_vkDebugUtilsMessengerCallbackEXT = (PFN_vkDebugUtilsMessengerCallbackEXT)DefaultDebugCallback);
         ~DebugMessenger();
     };
 }
 
-#endif // DEBUG_H_
+#endif // DEBUG_H

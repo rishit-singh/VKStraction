@@ -31,7 +31,7 @@ namespace VKStraction
 
         ValidationLayer ValidationLayers;
 
-        DebugMessenger Messenger;
+       DebugMessenger Messenger;
 
         VkInstanceCreateInfo& GetCreateInfo();
 

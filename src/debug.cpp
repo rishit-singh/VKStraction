@@ -1,19 +1,15 @@
 #include <debug.hpp>
 
-VKStraction::DebugMessenger::DebugMessenger()
-{}
-
-VKStraction::DebugMessenger::DebugMessenger(VkInstance instance, PFN_vkDebugUtilsMessengerCallbackEXT callback)
+VKStraction::DebugMessenger::DebugMessenger(PFN_vkDebugUtilsMessengerCallbackEXT callback)
 {
-    this->Instance = instance;
+    this->Instance = nullptr;
     this->Callback = callback;
-
-    this->GenerateCreateInfo();
 }
 
 VKStraction::DebugMessenger::~DebugMessenger()
 {
-    vkDestroyDebugUtilsMessengerEXT(this->Instance, this->Messenger, nullptr);
+    if (this->Instance)
+        this->DestroyDebugUtilsMEssengerEXT(this->Instance, this->Messenger, nullptr);
 }
 
 void VKStraction::DebugMessenger::GenerateCreateInfo()
@@ -31,10 +27,29 @@ VkDebugUtilsMessengerCreateInfoEXT* VKStraction::DebugMessenger::GetCreateInfo()
     return &this->CreateInfo;
 }
 
-void VKStraction::DebugMessenger::Enable()
+void VKStraction::DebugMessenger::Enable(VkInstance instance)
 {
-    if (vkCreateDebugUtilsMessengerEXT(this->Instance, &this->CreateInfo, nullptr,  &this->Messenger) != VK_SUCCESS)
+    this->Instance = instance;
+
+    this->LoadAPI();
+
+    if (this->CreateDebugUtilsMessengerEXT(this->Instance, &this->CreateInfo, nullptr,  &this->Messenger) != VK_SUCCESS)
         throw std::runtime_error("Failed to initialize debug messenger. ");
+}
+
+void VKStraction::DebugMessenger::LoadAPI()
+{
+    PFN_vkVoidFunction function;
+
+    if (!(function = vkGetInstanceProcAddr(this->Instance, "vkCreateDebugUtilsMessengerEXT")))
+        throw std::runtime_error("Failed to load vkCreateDebugUtilsMessengerEXT");
+
+    this->CreateDebugUtilsMessengerEXT = reinterpret_cast<PFN_vkCreateDebugUtilsMessengerEXT>(function);
+
+    if (!(function = vkGetInstanceProcAddr(this->Instance, "vkDestroyDebugUtilsMessengerEXT")))
+        throw std::runtime_error("Failed to load vkDestroyDebugUtilsMessengerEXT");
+
+    this->DestroyDebugUtilsMEssengerEXT = reinterpret_cast<PFN_vkDestroyDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(this->Instance, "vkDestroyDebugUtilsMessengerEXT"));
 }
 
 VKAPI_ATTR VkBool32 VKAPI_CALL VKStraction::DebugMessenger::DefaultDebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT type, const VkDebugUtilsMessengerCallbackDataEXT* callbackData, void* userData)

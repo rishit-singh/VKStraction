@@ -1,9 +1,11 @@
 #include "debug.hpp"
 #include <builder.hpp>
+#include <stdexcept>
 
+#define DEBUG
 
 VKStraction::VulkanInstance::VulkanInstance(VkApplicationInfo* appInfo)
-    : AppInfo(appInfo), Instance(nullptr), EnableValidationLayers(false), ValidationLayers(ValidationLayer(nullptr))
+    : AppInfo(appInfo), Instance(nullptr), EnableValidationLayers(false), ValidationLayers(ValidationLayer(nullptr)), Messenger(DebugMessenger())
 {
     #ifdef DEBUG
     std::cout << "Debug enabled\n";
@@ -30,10 +32,7 @@ const VkInstance& VKStraction::VulkanInstance::Build()
         throw std::runtime_error("Failed to create VkInstance");
 
     if (this->EnableValidationLayers)
-    {
-        this->Messenger = DebugMessenger(this->Instance);
-        this->Messenger.Enable();
-    }
+         this->Messenger.Enable(this->Instance);
 
     return this->Instance;
 }
@@ -68,7 +67,10 @@ VkInstanceCreateInfo &VKStraction::VulkanInstance::GetCreateInfo()
     this->CreateInfo.enabledLayerCount = 0;
 
     if (this->EnableValidationLayers)
-        this->CreateInfo.pNext = this->Messenger.GetCreateInfo();
+    {
+       this->Messenger.GenerateCreateInfo();
+       this->CreateInfo.pNext = this->Messenger.GetCreateInfo();
+    }
 
     return this->CreateInfo;
 }
