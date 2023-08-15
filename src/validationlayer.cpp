@@ -18,16 +18,13 @@ bool VKStraction::ValidationLayer::CheckSupport()
 {
     uint32_t count;
 
-    vkEnumerateInstanceLayerProperties(&count, nullptr);
+    if (vkEnumerateInstanceLayerProperties(&count, nullptr) != VK_SUCCESS)
+        throw std::runtime_error("Failed to get instance layer count.");
 
-    this->AvailableLayers.reserve(count);
+    this->AvailableLayers = std::vector<VkLayerProperties>(count);
 
-    vkEnumerateInstanceLayerProperties(&count, this->AvailableLayers.data());
-
-    std::cout << "Layercount: " <<  count << '\n';
-
-    for (auto layer : this->AvailableLayers)
-        std::cout << "layer: " << layer.layerName << '\n';
+    if (vkEnumerateInstanceLayerProperties(&count, this->AvailableLayers.data()) != VK_SUCCESS)
+        throw std::runtime_error("Failed to get instance layer properties.");
 
     for (int x = 0; x < this->Layers.size(); x++)
         if (!this->LayerExists(this->Layers[x]))
@@ -48,7 +45,7 @@ bool VKStraction::ValidationLayer::LayerExists(const char *layer)
 void VKStraction::ValidationLayer::Enable()
 {
     if (!this->CheckSupport())
-        throw std::runtime_error("Validation layers not supported");
+            throw std::runtime_error("Validation layers not supported");
 
     this->CreateInfo->enabledLayerCount = this->Layers.size();
     this->CreateInfo->ppEnabledLayerNames = this->Layers.data();

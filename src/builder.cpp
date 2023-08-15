@@ -1,8 +1,8 @@
 #include "debug.hpp"
+#include "validationlayer.hpp"
 #include <builder.hpp>
 #include <stdexcept>
 
-#define DEBUG
 
 VKStraction::VulkanInstance::VulkanInstance(VkApplicationInfo* appInfo)
     : AppInfo(appInfo), Instance(nullptr), EnableValidationLayers(false), ValidationLayers(ValidationLayer(nullptr)), Messenger(DebugMessenger())
@@ -58,18 +58,27 @@ VkInstanceCreateInfo &VKStraction::VulkanInstance::GetCreateInfo()
     this->EnabledExtensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 
     if (this->EnableValidationLayers)
+    {
         this->EnabledExtensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+        this->ValidationLayers = ValidationLayer(&this->CreateInfo);
+
+        this->ValidationLayers.AddLayer("VK_LAYER_KHRONOS_validation");
+    }
 
     this->CreateInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 
     this->CreateInfo.enabledExtensionCount = this->EnabledExtensions.size();
     this->CreateInfo.ppEnabledExtensionNames = this->EnabledExtensions.data();
-    this->CreateInfo.enabledLayerCount = 0;
 
     if (this->EnableValidationLayers)
     {
-       this->Messenger.GenerateCreateInfo();
-       this->CreateInfo.pNext = this->Messenger.GetCreateInfo();
+        this->ValidationLayers.Enable();
+        this->CreateInfo.pNext = this->Messenger.GetCreateInfo();
+    }
+    else
+    {
+        this->CreateInfo.enabledLayerCount = 0;
+        this->CreateInfo.pNext = nullptr;
     }
 
     return this->CreateInfo;

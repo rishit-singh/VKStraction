@@ -4,6 +4,7 @@ VKStraction::DebugMessenger::DebugMessenger(PFN_vkDebugUtilsMessengerCallbackEXT
 {
     this->Instance = nullptr;
     this->Callback = callback;
+    this->GenerateCreateInfo();
 }
 
 VKStraction::DebugMessenger::~DebugMessenger()
@@ -35,6 +36,8 @@ void VKStraction::DebugMessenger::Enable(VkInstance instance)
 
     if (this->CreateDebugUtilsMessengerEXT(this->Instance, &this->CreateInfo, nullptr,  &this->Messenger) != VK_SUCCESS)
         throw std::runtime_error("Failed to initialize debug messenger. ");
+
+    std::cout << ";";
 }
 
 void VKStraction::DebugMessenger::LoadAPI()
