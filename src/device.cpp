@@ -1,3 +1,4 @@
+#include "vulkan/vulkan_core.h"
 #include <device.hpp>
 
 VKStraction::PhysicalDevice::PhysicalDevice()
@@ -59,6 +60,30 @@ void VKStraction::PhysicalDevice::Initialize()
 
 bool VKStraction::PhysicalDevice::IsSuitable()
 {
-  return (this->Properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU &&
-          this->Features.geometryShader);
+  // return (this->Properties.deviceType ==
+  //         VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU &&
+  //         this->Features.geometryShader);
+
+    return this->GetQueueFamilyIndices().has_value();
+}
+
+
+std::optional<uint32_t> VKStraction::PhysicalDevice::GetQueueFamilyIndices()
+{
+    std::optional<uint32_t> index;
+
+    std::vector<VkQueueFamilyProperties> queueFamilies;
+
+    uint32_t count;
+
+    vkGetPhysicalDeviceQueueFamilyProperties(this->Device, &count, nullptr);
+    queueFamilies.reserve(count);
+    vkGetPhysicalDeviceQueueFamilyProperties(this->Device, &count, queueFamilies.data());
+
+
+    for (uint32_t x = 0; x < queueFamilies.size(); x++)
+        if (queueFamilies[x].queueFlags & VK_QUEUE_GRAPHICS_BIT)
+            index = x;
+
+    return index;
 }

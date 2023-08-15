@@ -2,8 +2,10 @@
 #define DEVICE_H_
 
 #include <vulkan/vulkan_core.h>
-#include <stdexcept>
 #include <vector>
+#include <optional>
+#include <stdexcept>
+
 
 namespace VKStraction
 {
@@ -15,6 +17,8 @@ namespace VKStraction
         VkPhysicalDeviceFeatures Features;
 
         void Initialize();
+
+        std::optional<uint32_t> GetQueueFamilyIndices();
 
     public:
         VkPhysicalDevice Device;
@@ -38,6 +42,7 @@ namespace VKStraction
         void FetchDevices();
 
         void ChooseDevice();
+
     public:
         const PhysicalDevice& GetSuitableDevice();
 
