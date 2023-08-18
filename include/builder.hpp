@@ -7,6 +7,7 @@
 
 #include <validationlayer.hpp>
 #include <debug.hpp>
+#include <device.hpp>
 #include <vector>
 #include <stdexcept>
 #include <stdlib.h>
@@ -33,6 +34,8 @@ namespace VKStraction
 
         DebugMessenger Messenger;
 
+        PhysicalDevice Device;
+
         VkInstanceCreateInfo& GetCreateInfo();
 
         void GetSupportedExtensions();
@@ -40,6 +43,7 @@ namespace VKStraction
         bool CheckValidationLayerSupport();
 
         bool EnableValidationLayers;
+
     public:
         const VkInstance& Build();
 

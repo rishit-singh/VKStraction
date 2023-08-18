@@ -1,5 +1,3 @@
-#include "debug.hpp"
-#include "validationlayer.hpp"
 #include <builder.hpp>
 #include <stdexcept>
 
@@ -33,6 +31,8 @@ const VkInstance& VKStraction::VulkanInstance::Build()
 
     if (this->EnableValidationLayers)
          this->Messenger.Enable(this->Instance);
+
+    this->Device = PhysicalDeviceManager(this->Instance).GetSuitableDevice();
 
     return this->Instance;
 }

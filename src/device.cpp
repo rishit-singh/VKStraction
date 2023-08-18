@@ -1,4 +1,3 @@
-#include "vulkan/vulkan_core.h"
 #include <device.hpp>
 
 VKStraction::PhysicalDevice::PhysicalDevice()
@@ -10,6 +9,8 @@ VKStraction::PhysicalDevice::PhysicalDevice(VkPhysicalDevice device)
     this->Initialize();
 }
 
+VKStraction::PhysicalDevice::~PhysicalDevice()
+{}
 
 VKStraction::PhysicalDeviceManager::PhysicalDeviceManager(VkInstance instance)
     : Instance(instance)
@@ -67,6 +68,16 @@ bool VKStraction::PhysicalDevice::IsSuitable()
     return this->GetQueueFamilyIndices().has_value();
 }
 
+const VKStraction::PhysicalDevice& VKStraction::PhysicalDeviceManager::GetSuitableDevice()
+{
+    for (size_t x = 0; x < this->Devices.size(); x++)
+        if (this->Devices[x].IsSuitable())
+            return this->Devices[x];
+
+    throw std::runtime_error("No suitable device found.");
+
+    return nullptr;
+}
 
 std::optional<uint32_t> VKStraction::PhysicalDevice::GetQueueFamilyIndices()
 {
